@@ -32,6 +32,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if ($request->wantsJson()) return;
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
@@ -48,6 +50,8 @@ class AuthenticatedSessionController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+
+        if ($request->wantsJson()) return;
 
         return redirect('/');
     }
