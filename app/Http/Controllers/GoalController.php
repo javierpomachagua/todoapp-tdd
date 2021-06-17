@@ -25,7 +25,16 @@ class GoalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+            'user_id' => 'required|exists:App\Models\User,id'
+        ]);
+
+        Goal::create($validated);
+
+        return response()->json([
+            'message' => 'Goal created!'
+        ], 201);
     }
 
     /**
@@ -48,7 +57,17 @@ class GoalController extends Controller
      */
     public function update(Request $request, Goal $goal)
     {
-        //
+        $this->authorize('update', $goal);
+
+        $validated = $request->validate([
+            'name' => 'required',
+        ]);
+
+        $goal->update($validated);
+
+        return response()->json([
+            'message' => 'Goal updated!'
+        ], 201);
     }
 
     /**
